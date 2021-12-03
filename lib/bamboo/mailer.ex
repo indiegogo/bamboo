@@ -326,11 +326,11 @@ defmodule Bamboo.Mailer do
          adapter.supports_bulk_email? do
       :ok
     else
-      do_validate_recipients(email, adapter)
+      do_validate_recipients(email)
     end
   end
 
-  defp do_validate_recipients(email, template) do
+  defp do_validate_recipients(email) do
     if Enum.all?(
          Enum.map([:to, :cc, :bcc], &Map.get(email, &1)),
          &is_nil_recipient?/1

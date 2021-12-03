@@ -140,7 +140,9 @@ defmodule Bamboo.SendGridAdapter do
   end
 
   defp put_personalizations(body, email) do
-    Map.put(body, :personalizations, personalizations(email))
+    body
+    |> Map.put(:personalizations, personalizations(email))
+    |> Map.delete(:to)
   end
 
   defp personalizations(email) do

@@ -79,6 +79,8 @@ defmodule Bamboo.SendGridAdapter do
   @doc false
   def supports_attachments?, do: true
 
+  def supports_bulk_email?, do: true
+
   defp get_key(config) do
     api_key =
       case Map.get(config, :api_key) do

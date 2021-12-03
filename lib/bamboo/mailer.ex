@@ -321,7 +321,16 @@ defmodule Bamboo.Mailer do
 
   defp validate_from_address(_email), do: :ok
 
-  defp validate_recipients(%Bamboo.Email{} = email) do
+  defp validate_recipients(%Bamboo.Email{} = email, adapter) do
+    if Code.ensure_loaded?(adapter) && function_exported?(adapter, :supports_bulk_email?, 0) &&
+         adapter.supports_bulk_email? do
+      :ok
+    else
+      do_validate_recipients(email, adapter)
+    end
+  end
+
+  defp do_validate_recipients(email, template) do
     if Enum.all?(
          Enum.map([:to, :cc, :bcc], &Map.get(email, &1)),
          &is_nil_recipient?/1
@@ -331,7 +340,6 @@ defmodule Bamboo.Mailer do
       :ok
     end
   end
-
   defp is_nil_recipient?(nil), do: true
   defp is_nil_recipient?({_, nil}), do: true
   defp is_nil_recipient?([]), do: false

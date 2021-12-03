@@ -262,7 +262,7 @@ defmodule Bamboo.Mailer do
   end
 
   defp empty_recipients?(email) do
-    email.to == [] && email.cc == [] && email.bcc == []
+    email.to == [] && email.cc == [] && email.bcc == [] && !get_in(email, [:private, :additional_personalizations])
   end
 
   defp debug_sent(email, adapter) do

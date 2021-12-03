@@ -294,7 +294,7 @@ defmodule Bamboo.Mailer do
 
   defp validate(email, adapter) do
     with :ok <- validate_from_address(email),
-         :ok <- validate_recipients(email),
+         :ok <- validate_recipients(email, adapter),
          :ok <- validate_attachment_support(email, adapter) do
       :ok
     end
